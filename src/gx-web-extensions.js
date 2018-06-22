@@ -85,6 +85,9 @@ gx.extensions.web = (function ($) {
 					name = name || this.defaultWindowName;
 										
 				if (opts) {
+					opts.Appearance = opts.Appearance || { ui: {}};
+					opts.Advanced = opts.Advanced || {};
+					opts.Position = opts.Position || {};
 					var ui = opts.Appearance,
 						height = ui.Height, 
 						width = ui.Width,
