@@ -85,10 +85,9 @@ gx.extensions.web = (function ($) {
 					name = name || this.defaultWindowName;
 										
 				if (opts) {
-					opts.Appearance = opts.Appearance || { ui: {}};
-					opts.Advanced = opts.Advanced || {};
-					opts.Position = opts.Position || {};
-					var ui = opts.Appearance,
+					var ui = opts.Appearance || {},
+						position = opts.Position || {},
+						advanced = opts.Advanced || {}
 						height = ui.Height, 
 						width = ui.Width,
 						showToolbar = gx.lang.gxBoolean(ui.ShowToolBar),
@@ -97,10 +96,10 @@ gx.extensions.web = (function ($) {
 						hideScrollBars = gx.lang.gxBoolean(ui.HideScrollBars),
 						fitToScreen = gx.lang.gxBoolean(ui.FitToScreen),
 						fullScreen = gx.lang.gxBoolean(ui.Fullscreen),
-						copyhistory = gx.lang.gxBoolean(opts.Advanced.CopyHistory),
-						top = opts.Position.Top,
-						left = opts.Position.Left,
-						customPosition = opts.Position.CustomPosition;
+						copyhistory = gx.lang.gxBoolean(advanced.CopyHistory),
+						top = position.Top,
+						left = position.Left,
+						customPosition = position.CustomPosition;
 						
 													        	        
 	        if (fitToScreen) {
