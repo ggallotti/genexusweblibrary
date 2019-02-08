@@ -1,0 +1,34 @@
+{
+  "name": "com.genexus.web.extension",
+  "version": "1.0.0",
+  "description": "GeneXus Web Library",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "babel": "babel --presets es2015 src/gx-grid-freeze.js -o build/main.bundle.js",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggallotti/genexusweblibrary.git"
+  },
+  "keywords": [
+    "genexus",
+    "web",
+    "library",
+    "grid",
+    "extension"
+  ],
+  "author": "Gonzalo Gallotti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ggallotti/genexusweblibrary/issues"
+  },
+  "homepage": "https://github.com/ggallotti/genexusweblibrary#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
