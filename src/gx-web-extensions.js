@@ -69,6 +69,37 @@ gx.extensions.web = (function ($) {
 			}
 		},
 
+		geolocation: {
+			isSupported: function() {
+				if ("geolocation" in navigator) {
+					return true;
+				  } else {
+					console.log("Geolocation is not supported in this browser");
+					return false;
+				  }
+			},
+
+			onSuccess: function(position) {
+				var crd = position.coords;
+				var gxGeolocation = crd.latitude + "," + crd.longitude;
+				var gxPosition = {Time: new Date(position.timestamp), Location: gxGeolocation, Heading: crd.heading, Speed: crd.speed, Precision: crd.accurancy};
+				gx.fx.obs.notify('extensions.web.geolocation.onLocationChanged', [gxPosition]);
+			},
+
+			onError: function(err) {
+				console.log(`ERROR(${err.code}): ${err.message}`);
+				gx.fx.obs.notify('extensions.web.geolocation.onError', [err.code, err.message]);
+			},
+
+			requestLocation: function(options) {
+				if (this.isSupported()) {
+					options.timeout = (!options.timeout)? 'Infinity': options.timeout;
+					navigator.geolocation.getCurrentPosition(this.onSuccess, this.onError, options);
+				}
+			}
+
+		},
+
 		window: {
 			defaultWindowName: 'gxWindowName',
 			openedWindows: {},
