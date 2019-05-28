@@ -93,7 +93,9 @@ gx.extensions.web = (function ($) {
 
 			requestLocation: function(options) {
 				if (this.isSupported()) {
-					options.timeout = (!options.timeout)? 'Infinity': options.timeout;
+					if (options) {
+						options.timeout = (!options.timeout)? 'Infinity': options.timeout;
+					}
 					navigator.geolocation.getCurrentPosition(this.onSuccess, this.onError, options);
 				}
 			}
