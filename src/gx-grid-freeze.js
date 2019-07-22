@@ -380,8 +380,9 @@ WebGridExtension = (function () {
 			var gxO = gx.O,
 				cmpCtx = gxO.CmpContext,
 				gridObj = gxO.getGrid(gridName.replace(cmpCtx, "")),
-				gridTable = "#" + gridObj.gridName + "ContainerTbl",
-				$gridTable = $("#" + gridObj.gridName + "ContainerTbl"),
+				gridName = gridObj.gxComponentContext + gridObj.gridName,
+				gridTable = "#" + gridName + "ContainerTbl",
+				$gridTable = $("#" + gridName + "ContainerTbl"),
 				$gridContainerDiv = $gridTable.closest("div"),
 				o;
 			
