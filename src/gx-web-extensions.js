@@ -82,7 +82,7 @@ gx.extensions.web = (function ($) {
 			onSuccess: function(position) {
 				var crd = position.coords;
 				var gxGeolocation = crd.latitude + "," + crd.longitude;
-				var gxPosition = {Time: new Date(position.timestamp), Location: gxGeolocation, Heading: crd.heading, Speed: crd.speed, Precision: crd.accurancy};
+				var gxPosition = {Time: new Date(position.timestamp), Location: gxGeolocation, Heading: crd.heading, Speed: crd.speed, Precision: crd.accuracy};
 				gx.fx.obs.notify('extensions.web.geolocation.onLocationChanged', [gxPosition]);
 			},
 
