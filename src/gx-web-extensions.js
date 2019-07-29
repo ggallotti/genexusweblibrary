@@ -87,7 +87,7 @@ gx.extensions.web = (function ($) {
 			},
 
 			onError: function(err) {
-				console.log(`ERROR(${err.code}): ${err.message}`);
+				console.log('extensions.web ERROR', err.code, err.message);
 				gx.fx.obs.notify('extensions.web.geolocation.onError', [err.code, err.message]);
 			},
 
