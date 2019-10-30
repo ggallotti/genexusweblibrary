@@ -8,10 +8,11 @@ gx.extensions.web = (function ($) {
 
 		events: {
 			attach: function () {
-				gx.fx.obs.addObserver('popup.afterclose', this, gx.extensions.web.popup.onPopupClose);
-				gx.fx.obs.addObserver('gx.onready', this, gx.extensions.web.webevents.onReady);
-				gx.fx.obs.addObserver('gx.onunload', this, gx.extensions.web.webevents.onUnload);
-				gx.fx.obs.addObserver('gx.onerror', this, gx.extensions.web.webevents.onError);
+				var opts = { doNotDelete:true };
+				gx.fx.obs.addObserver('popup.afterclose', this, gx.extensions.web.popup.onPopupClose, opts);
+				gx.fx.obs.addObserver('gx.onready', this, gx.extensions.web.webevents.onReady, opts);
+				gx.fx.obs.addObserver('gx.onunload', this, gx.extensions.web.webevents.onUnload, opts);
+				gx.fx.obs.addObserver('gx.onerror', this, gx.extensions.web.webevents.onError, opts);
 			}
 		},
 
@@ -204,5 +205,8 @@ gx.extensions.web = (function ($) {
 		}
 	};
 })(gx.$);
+
+
+gx.evt.onready(window, function () {gx.extensions.web.initialize();});
 
 gx.extensions.web.initialize();
