@@ -202,7 +202,39 @@ gx.extensions.web = (function ($) {
 			onPopupClose: function () {
 				gx.fx.obs.notify('extensions.web.popup.onpopupclosed', [arguments[0].url.replace(".aspx", "")]);
 			}
+		},
+
+		timer: {
+			installed: false,
+			started: false,
+			startedTime: false,
+			interval: false,
+
+			start: function (intervalTimeInMilliseconds) {
+				if (!this.started) {
+					this.started = true;
+					this.startedTime = new Date();
+					this.interval = setInterval(this.onTimeElapsed.closure(this, []), intervalTimeInMilliseconds);
+					if (!this.installed) {
+						gx.spa.addObserver('onnavigatestart', this, this.stop.closure(this));
+					}
+					this.installed = true;
+				}
+			},
+
+			stop: function () {
+				if (this.started) {
+					clearInterval(this.interval);
+					this.started = false;
+				}
+			},
+			
+			onTimeElapsed: function () {
+				var elapsedTimeMilliseconds = (new Date().getTime() - this.startedTime.getTime());
+				gx.fx.obs.notify('gx.extensions.web.timer.ontimeelapsed', [elapsedTimeMilliseconds]);
+			}
 		}
+
 	};
 })(gx.$);
 
