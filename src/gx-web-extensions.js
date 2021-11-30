@@ -12,7 +12,7 @@ gx.extensions.web = (function ($) {
 				gx.fx.obs.addObserver('popup.afterclose', this, gx.extensions.web.popup.onPopupClose, opts);
 				gx.fx.obs.addObserver('gx.onready', this, gx.extensions.web.webevents.onReady, opts);
 				gx.fx.obs.addObserver('gx.onunload', this, gx.extensions.web.webevents.onUnload, opts);
-				gx.fx.obs.addObserver('gx.onerror', this, gx.extensions.web.webevents.onError, opts);
+				gx.fx.obs.addObserver('gx.onerror', this, gx.extensions.web.webevents.onError, opts);				
 			}
 		},
 
@@ -259,8 +259,81 @@ gx.extensions.web = (function ($) {
 				var elapsedTimeMilliseconds = (new Date().getTime() - this.startedTime.getTime());
 				gx.fx.obs.notify('gx.extensions.web.timer.ontimeelapsed', [elapsedTimeMilliseconds]);
 			}
-		}
+		},
 
+		notification: {
+			msgs: {},
+
+			show: function (id, notificationInfo) {
+				if (arguments.length === 2) {
+					this.showRequest(id, notificationInfo)
+				}
+				else {
+					var notificationInfo = {
+						body : arguments[2] || '',
+						title: arguments[1] || '',
+						image: arguments[3] || ''
+					};
+					this.showRequest(arguments[0], notificationInfo);
+				}
+			},
+
+			hide: function(id) {
+				if (!("Notification" in window)) {
+					return;
+				}
+				var n = this.msgs[id];
+				if (n) {
+					n.close();
+					delete this.msgs[id];
+				}
+			},
+
+			requestPermission: function() {
+				this.showRequest();
+			},
+
+			showRequest: function(id, notificationInfo) {
+				id = id || 'undefined';
+				if (notificationInfo)
+					notificationInfo = this.ensureNotificationInfo(notificationInfo);
+				
+				if (!("Notification" in window)) {
+					console.log("This browser does not support desktop notifications");
+				  }
+				  else if (Notification.permission === "granted") {
+					if (notificationInfo) {
+						this.msgs[id] = new Notification(notificationInfo.title, notificationInfo);
+					}
+				  }
+				  else if (Notification.permission !== "denied") {
+					var msgsList = this.msgs;
+					Notification.requestPermission().then(function (permission) {
+						if (notificationInfo) {
+							msgsList[id] = new Notification(notificationInfo.title, notificationInfo);
+						}
+						
+						gx.fx.obs.notify('gx.extensions.web.notification.onrequestpermission', [permission]);
+						
+					});
+				  }
+				  else {
+					  console.log("Notification permission is denied");
+				  }
+			},
+
+			ensureNotificationInfo: function (notificationInfo) {
+				var key, keys = Object.keys(notificationInfo);
+				var n = keys.length;
+				var newobj= {}
+				while (n--) {
+					key = keys[n];
+					if (key !== 'requireInteraction' && notificationInfo[key] != '')
+						newobj[key.toLowerCase()] = notificationInfo[key];
+				}
+				return newobj;
+			}
+		}
 	};
 })(gx.$);
 
