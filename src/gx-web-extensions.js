@@ -262,8 +262,8 @@ gx.extensions.web = (function ($) {
 		},
 
 		notification: {
+			defaultName: 'default',
 			msgs: {},
-
 			show: function (id, notificationInfo) {
 				if (arguments.length === 2) {
 					this.showRequest(id, notificationInfo)
@@ -282,6 +282,7 @@ gx.extensions.web = (function ($) {
 				if (!("Notification" in window)) {
 					return;
 				}
+				id = id || this.defaultName;
 				var n = this.msgs[id];
 				if (n) {
 					n.close();
@@ -294,7 +295,7 @@ gx.extensions.web = (function ($) {
 			},
 
 			showRequest: function(id, notificationInfo) {
-				id = id || 'undefined';
+				id = id || this.defaultName;
 				if (notificationInfo)
 					notificationInfo = this.ensureNotificationInfo(notificationInfo);
 				
@@ -328,8 +329,8 @@ gx.extensions.web = (function ($) {
 				var newobj= {}
 				while (n--) {
 					key = keys[n];
-					if (key !== 'requireInteraction' && notificationInfo[key] != '')
-						newobj[key.toLowerCase()] = notificationInfo[key];
+					if (notificationInfo[key] !== '')
+						newobj[key.charAt(0).toLowerCase() + key.slice(1)] = notificationInfo[key];
 				}
 				return newobj;
 			}
